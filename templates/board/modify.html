@@ -6,7 +6,8 @@
 
 {% block content %}
 			<div id="board">
-				<form class="board-form" method="post" action="/board/modify/{{board.id}}?page={{page}}">
+				<form class="board-form" method="post" action="/board/modify/{{board.id}}">
+					<input type="hidden" name="page" value="{{page}}" />
 					{% csrf_token %}
 					<table class="tbl-ex">
 						<tr>

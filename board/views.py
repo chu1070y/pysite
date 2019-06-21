@@ -100,11 +100,10 @@ def board_delete(request, id=0):
     row.save()
 
     try:
-        page = request.POST['page']
+        page = request.GET['page']
     except Exception:
         page = 1
 
-    print("delete " + str(page))
     return HttpResponseRedirect('/board?page=' + str(page))
 
 
@@ -132,4 +131,4 @@ def board_modify(request, id=0):
     except Exception:
         page = 1
 
-    return HttpResponseRedirect('/board/' + str(id) + "?page=" + page)
+    return HttpResponseRedirect('/board/' + str(id) + "?page=" + str(page))
