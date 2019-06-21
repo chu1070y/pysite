@@ -11,22 +11,11 @@ from user.models import User
 def board_list(request):
     page_info = Pageinfo()
     page = 1
-    print("---------------12121")
 
-    if request.method == 'GET':
-        print("---------------2222")
-        try:
-            print(request.GET['page'])
-            page = int(request.GET['page'])
-        except Exception:
-            pass
-
-    elif request.method == 'POST':
-        print("---------------333")
-        try:
-            page = int(request.POST['page'])
-        except Exception:
-            pass
+    try:
+        page = int(request.GET['page'])
+    except Exception:
+        pass
 
     page_info.set_page(page)
     page_info.set_total_count(Board.objects.count())
