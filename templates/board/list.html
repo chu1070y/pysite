@@ -24,19 +24,19 @@
         {% for board in boards %}
         {% if board.remove == 0 %}
         <tr>
-            <td>{{ forloop.revcounter }}</td>
+            <td>{{ page_info.board_num | sub:forloop.counter}}</td>
             <td style="text-align: left; padding-left: {{board.depth | mul:10}}px">
                 {% if board.depth != 0 %}
                 <img style="height:20px" src="/assets/images/reply.png">
                 {% endif %}
-                <a href="/board/{{board.id}}">{{ board.title }}</a>
+                <a href="/board/{{board.id}}?page={{page_info.page}}">{{ board.title }}</a>
             </td>
             <td>{{ board.user.name }}</td>
             <td>{{ board.hit }}</td>
             <td>{{ board.regdate | date:'Y-m-d H:i:s' }}</td>
 
             {% if request.session.authuser.id == board.user.id %}
-            <td><a href="/board/delete/{{board.id}}" class="del"><img id="profile" src="/assets/images/recycle.png"></a>
+            <td><a href="/board/delete/{{board.id}}?page={{page_info.page}}" class="del"><img id="profile" src="/assets/images/recycle.png"></a>
             </td>
             {% else %}
             <td></td>
@@ -60,13 +60,28 @@
     <!-- pager 추가 -->
     <div class="pager">
         <ul>
-            <li><a href="">◀</a></li>
-            <li><a href="">1</a></li>
-            <li class="selected">2</li>
-            <li><a href="">3</a></li>
-            <li>4</li>
-            <li>5</li>
-            <li><a href="">▶</a></li>
+            {% if page_info.prev_page > 0 %}
+            <li><a href="/board?page={{page_info.prev_page}}" >◀</a></li>
+            {% else %}
+             <li>◀</li>
+            {% endif %}
+
+            {% for page in page_info.page_range %}
+            {% if page_info.page == page %}
+            <li class="selected">
+            {% else %}
+            <li>
+            {% endif %}
+                <a href="/board?page={{ page }}">{{ page }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page_info.next_page <= page_info.total_page_count %}
+            <li><a href="/board?page={{page_info.next_page}}" >▶</a></li>
+            {% else %}
+             <li>▶</li>
+            {% endif %}
+
         </ul>
     </div>
     <!-- pager 추가 -->

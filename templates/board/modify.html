@@ -6,7 +6,7 @@
 
 {% block content %}
 			<div id="board">
-				<form class="board-form" method="post" action="/board/modify/{{board.id}}">
+				<form class="board-form" method="post" action="/board/modify/{{board.id}}?page={{page}}">
 					{% csrf_token %}
 					<table class="tbl-ex">
 						<tr>
@@ -24,7 +24,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="/board/{{board.id}}">취소</a>
+						<a href="/board/{{board.id}}?page={{page}}">취소</a>
 						<input type="submit" value="수정">
 					</div>
 				</form>				

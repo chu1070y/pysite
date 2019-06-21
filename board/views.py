@@ -4,24 +4,57 @@ from django.shortcuts import render
 
 # Create your views here.
 from board.models import Board
+from board.service import Pageinfo
 from user.models import User
 
 
 def board_list(request):
-    board = Board.objects.order_by('-groupno', 'orderno')[0:10]
+    page_info = Pageinfo()
+    page = 1
+    print("---------------12121")
 
-    data = {'boards': board}
+    if request.method == 'GET':
+        print("---------------2222")
+        try:
+            print(request.GET['page'])
+            page = int(request.GET['page'])
+        except Exception:
+            pass
+
+    elif request.method == 'POST':
+        print("---------------333")
+        try:
+            page = int(request.POST['page'])
+        except Exception:
+            pass
+
+    page_info.set_page(page)
+    page_info.set_total_count(Board.objects.count())
+
+    board = Board.objects.order_by('-groupno', 'orderno')[page_info.start:page_info.start + page_info.display]
+
+    data = {'boards': board, "page_info": page_info}
 
     return render(request, 'board/list.html', data)
 
 
 def board_writeform(request, id=-1):
-    data = {"id": id}
+    try:
+        page = request.GET['page']
+    except Exception:
+        page = 1
+
+    data = {"id": id, "page": page}
 
     return render(request, 'board/write.html', data)
 
 
 def board_write(request, id=-1):
+    try:
+        page = request.POST['page']
+    except Exception:
+        page = 1
+
     board = Board()
 
     board.title = request.POST['title']
@@ -38,20 +71,25 @@ def board_write(request, id=-1):
 
         board.save()
 
-        return HttpResponseRedirect('/board/')
+        return HttpResponseRedirect('/board?page=' + str(page))
 
     max_groupno = Board.objects.aggregate(max_groupno=Max('groupno'))
     board.groupno = 0 if max_groupno['max_groupno'] is None else max_groupno['max_groupno'] + 1
 
     board.save()
 
-    return HttpResponseRedirect('/board/')
+    return HttpResponseRedirect('/board?page=' + str(page))
 
 
 def board_view(request, id=0):
     board = Board.objects.get(id=id)
 
-    data = {"board": board}
+    try:
+        page = request.GET['page']
+    except Exception:
+        page = 1
+
+    data = {"board": board, "page": page}
 
     return render(request, 'board/view.html', data)
 
@@ -61,13 +99,24 @@ def board_delete(request, id=0):
     row.remove = 1
     row.save()
 
-    return HttpResponseRedirect('/board/')
+    try:
+        page = request.POST['page']
+    except Exception:
+        page = 1
+
+    print("delete " + str(page))
+    return HttpResponseRedirect('/board?page=' + str(page))
 
 
 def board_modifyform(request, id=0):
     board = Board.objects.get(id=id)
 
-    data = {"board": board}
+    try:
+        page = request.GET['page']
+    except Exception:
+        page = 1
+
+    data = {"board": board, "page": page}
 
     return render(request, 'board/modify.html', data)
 
@@ -78,4 +127,9 @@ def board_modify(request, id=0):
     row.content = request.POST['content']
     row.save()
 
-    return HttpResponseRedirect('/board/' + str(id))
+    try:
+        page = request.POST['page']
+    except Exception:
+        page = 1
+
+    return HttpResponseRedirect('/board/' + str(id) + "?page=" + page)

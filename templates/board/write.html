@@ -6,7 +6,7 @@
 
 {% block content %}
 			<div id="board">
-				<form class="board-form" method="post" action="/board/write/{{id}}">
+				<form class="board-form" method="post" action="/board/write/{{id}}?page={{page}}">
 					{% csrf_token %}
 					<table class="tbl-ex">
 						<tr>
@@ -27,7 +27,7 @@
 						{% if id == -1 %}
 						<a href="/board">취소</a>
 						{% else %}
-						<a href="/board/{{id}}">취소</a>
+						<a href="/board/{{id}}?page={{page}}">취소</a>
 						{% endif %}
 						<input type="submit" value="등록">
 					</div>
