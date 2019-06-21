@@ -154,7 +154,15 @@ Application 작업 (순서 뒤바뀌면 안될 수 있슴다.)
         |---- user
     어플리케이션 template 디렉토리 생성
 
-4. Model 정의(생략)
+4-1. Model 정의
+4-2. admin.py에
+    admin.site.register(user)
+4-3. migrations 이름의 DDL python 모듈을 생성
+    [터미널]
+    python manage.py makemigrations
+4-4. 물리DB와 스키마 동기화 작업을 한다.
+    [터미널]
+    python manage.py migrate
 
 5. urls.py에서 url-view의 handler 매핑
 
