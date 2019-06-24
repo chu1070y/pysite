@@ -212,3 +212,15 @@ def board_modify(request, id=0):
     # --------------------------------------
 
     return HttpResponseRedirect('/board/' + str(id) + '?page=' + str(page) + '&kwd=' + kwd)
+
+
+# 게시판 검색
+def board_search(request):
+    # 파라미터 추출 -----------------------
+    try:
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+    # --------------------------------------
+
+    return HttpResponseRedirect('/board?page=1&kwd=' + kwd)

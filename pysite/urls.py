@@ -49,7 +49,7 @@ urlpatterns = [
     path('board/delete/<int:id>', board_views.board_delete),
     path('board/modifyform/<int:id>', board_views.board_modifyform),
     path('board/modify/<int:id>', board_views.board_modify),
-    path('board/search', board_views.board_list),
+    path('board/search', board_views.board_search),
 
     path('admin/', admin.site.urls),
 ]
