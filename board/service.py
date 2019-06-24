@@ -21,7 +21,7 @@ class Pageinfo:
         self.page = page
         self.start = (self.page - 1) * self.display
 
-        self.prev_page = math.floor(self.page / (self.page_num + 1)) * self.page_num
+        self.prev_page = math.floor((self.page - 1) / self.page_num) * self.page_num
         self.next_page = self.prev_page + self.page_num + 1
 
     # 전체 게시글 수를 받아와 계산
@@ -38,3 +38,9 @@ class Pageinfo:
     def board_num(self):
         return self.total_count - (self.page - 1) * self.display + 1
 
+
+if __name__ == '__main__':
+    a = Pageinfo()
+    a.set_page(11)
+    print(a.prev_page)
+    print(a.next_page)

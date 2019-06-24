@@ -8,6 +8,7 @@
 			<div id="board">
 				<form class="board-form" method="post" action="/board/write/{{id}}">
 					<input type="hidden" name="page" value="{{page}}" />
+					<input type="hidden" name="kwd" value="{{kwd}}" />
 					{% csrf_token %}
 					<table class="tbl-ex">
 						<tr>
@@ -27,11 +28,11 @@
 					<div class="bottom">
 						<!-- 일반글 인 경우 -->
 						{% if id == -1 %}
-						<a href="/board">취소</a>
+						<a href="/board?page={{page}}&kwd={{ kwd }}">취소</a>
 
 						<!-- 답글 인 경우 -->
 						{% else %}
-						<a href="/board/{{id}}?page={{page}}">취소</a>
+						<a href="/board/{{id}}?page={{page}}&kwd={{ kwd }}">취소</a>
 
 						{% endif %}
 						<input type="submit" value="등록">

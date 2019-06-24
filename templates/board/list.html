@@ -28,13 +28,14 @@
         <tr>
             <td>{{ page_info.board_num | sub:forloop.counter}}</td>
             <td style="text-align: left; padding-left: {{board.depth | mul:10}}px">
+
                 <!-- 답글인 경우 -->
                 {% if board.depth != 0 %}
                 <img style="height:20px" src="/assets/images/reply.png">
 
                 <!-- 일반글인 경우 -->
                 {% endif %}
-                <a href="/board/{{board.id}}?page={{page_info.page}}">{{ board.title }}</a>
+                <a href="/board/{{board.id}}?page={{page_info.page}}&kwd={{ kwd }}">{{ board.title }}</a>
             </td>
             <td>{{ board.user.name }}</td>
             <td>{{ board.hit }}</td>
@@ -42,7 +43,7 @@
 
             <!-- 본인 글인지 확인 후, 삭제 버튼 보이기 -->
             {% if request.session.authuser.id == board.user.id %}
-            <td><a href="/board/delete/{{board.id}}?page={{page_info.page}}" class="del"><img id="profile" src="/assets/images/recycle.png"></a>
+            <td><a href="/board/delete/{{board.id}}?page={{page_info.page}}&kwd={{ kwd }}" class="del"><img id="profile" src="/assets/images/recycle.png"></a>
             </td>
             {% else %}
             <td></td>
@@ -68,7 +69,7 @@
     <div class="pager">
         <ul>
             {% if page_info.prev_page > 0 %}
-            <li><a href="/board?page={{page_info.prev_page}}" >◀</a></li>
+            <li><a href="/board?page={{page_info.prev_page}}&kwd={{ kwd }}" >◀</a></li>
             {% else %}
              <li>◀</li>
             {% endif %}
@@ -80,12 +81,12 @@
             {% else %}
             <li>
             {% endif %}
-                <a href="/board?page={{ page }}">{{ page }}</a>
+                <a href="/board?page={{ page }}&kwd={{ kwd }}">{{ page }}</a>
             </li>
             {% endfor %}
 
             {% if page_info.next_page <= page_info.total_page_count %}
-            <li><a href="/board?page={{page_info.next_page}}" >▶</a></li>
+            <li><a href="/board?page={{page_info.next_page}}&kwd={{ kwd }}" >▶</a></li>
             {% else %}
              <li>▶</li>
             {% endif %}

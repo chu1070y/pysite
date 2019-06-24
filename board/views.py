@@ -12,7 +12,6 @@ from user.models import User
 # 검색 기능과 페이징 기능
 def board_list(request):
     page_info = Pageinfo()  # 페이징 로직 (service.py)
-    page = 1
 
     # 파라미터 추출 -----------------------
     try:
@@ -23,46 +22,56 @@ def board_list(request):
     try:
         page = int(request.GET['page'])
     except Exception:
-        pass
+        page = 1
     # --------------------------------------
 
     # 현재 페이지와 전체 게시글 수로 페이징 정보 계산
     page_info.set_page(page)
-    page_info.set_total_count(Board.objects.count())
+    page_info.set_total_count(Board.objects.filter(title__icontains=kwd).count())
 
     # 데이터 추출 - ORM with 페이징 정보, 검색
     board = Board.objects.filter(title__icontains=kwd).order_by('-groupno', 'orderno')[
             page_info.start:page_info.start + page_info.display]
 
     # 게시판 정보와 페이징 정보 dict 형태로 합치기
-    data = {'boards': board, "page_info": page_info}
+    data = {'boards': board, "page_info": page_info, 'kwd': kwd}
 
     return render(request, 'board/list.html', data)
 
 
 # 게시판 글쓰기 양식
 def board_writeform(request, id=-1):
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.GET['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
     # 페이지 정보를 유지
-    data = {"id": id, "page": page}
+    data = {"id": id, "page": page, 'kwd': kwd}
 
     return render(request, 'board/write.html', data)
 
 
 # 게시판 일반글 / 답글 등록
 def board_write(request, id=-1):
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.POST['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.POST['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
     # 게시판 글 공통 정보 추출
     board = Board()
@@ -82,7 +91,7 @@ def board_write(request, id=-1):
 
         board.save()
 
-        return HttpResponseRedirect('/board?page=' + str(page))
+        return HttpResponseRedirect('/board?page=' + str(page) + '&kwd=' + kwd)
 
     # 게시판 일반글 등록
     max_groupno = Board.objects.aggregate(max_groupno=Max('groupno'))
@@ -90,7 +99,7 @@ def board_write(request, id=-1):
 
     board.save()
 
-    return HttpResponseRedirect('/board?page=' + str(page))
+    return HttpResponseRedirect('/board?page=' + str(page) + '&kwd=' + kwd)
 
 
 # 게시판 글 읽기
@@ -98,15 +107,20 @@ def board_view(request, id=0):
     # 게시판 글 DB에서 추출
     board = Board.objects.get(id=id)
 
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.GET['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
     # 페이지 정보를 유지
-    data = {"board": board, "page": page}
+    data = {"board": board, "page": page, 'kwd': kwd}
 
     response = render(request, 'board/view.html', data)
 
@@ -141,28 +155,38 @@ def board_delete(request, id=0):
     row.remove = 1
     row.save()
 
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.GET['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
-    return HttpResponseRedirect('/board?page=' + str(page))
+    return HttpResponseRedirect('/board?page=' + str(page) + '&kwd=' + kwd)
 
 
 # 게시판 수정 양식
 def board_modifyform(request, id=0):
     board = Board.objects.get(id=id)
 
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.GET['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
-    data = {"board": board, "page": page}
+    data = {"board": board, "page": page, 'kwd': kwd}
 
     return render(request, 'board/modify.html', data)
 
@@ -175,11 +199,16 @@ def board_modify(request, id=0):
     row.content = request.POST['content']
     row.save()
 
-    # page 파라미터 추출----------------
+    # 파라미터 추출 -----------------------
     try:
-        page = request.GET['page']
+        kwd = request.POST['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
+        page = int(request.POST['page'])
     except Exception:
         page = 1
-    # ----------------------------------
+    # --------------------------------------
 
-    return HttpResponseRedirect('/board/' + str(id) + "?page=" + str(page))
+    return HttpResponseRedirect('/board/' + str(id) + '?page=' + str(page) + '&kwd=' + kwd)
