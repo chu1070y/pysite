@@ -25,10 +25,14 @@
 						</tr>
 					</table>
 					<div class="bottom">
+						<!-- 일반글 인 경우 -->
 						{% if id == -1 %}
 						<a href="/board">취소</a>
+
+						<!-- 답글 인 경우 -->
 						{% else %}
 						<a href="/board/{{id}}?page={{page}}">취소</a>
+
 						{% endif %}
 						<input type="submit" value="등록">
 					</div>

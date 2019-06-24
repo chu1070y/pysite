@@ -23,12 +23,16 @@
         </tr>
 
         {% for board in boards %}
+        <!-- 게시글이 삭제돠지 않은 경우 -->
         {% if board.remove == 0 %}
         <tr>
             <td>{{ page_info.board_num | sub:forloop.counter}}</td>
             <td style="text-align: left; padding-left: {{board.depth | mul:10}}px">
+                <!-- 답글인 경우 -->
                 {% if board.depth != 0 %}
                 <img style="height:20px" src="/assets/images/reply.png">
+
+                <!-- 일반글인 경우 -->
                 {% endif %}
                 <a href="/board/{{board.id}}?page={{page_info.page}}">{{ board.title }}</a>
             </td>
@@ -36,6 +40,7 @@
             <td>{{ board.hit }}</td>
             <td>{{ board.regdate | date:'Y-m-d H:i:s' }}</td>
 
+            <!-- 본인 글인지 확인 후, 삭제 버튼 보이기 -->
             {% if request.session.authuser.id == board.user.id %}
             <td><a href="/board/delete/{{board.id}}?page={{page_info.page}}" class="del"><img id="profile" src="/assets/images/recycle.png"></a>
             </td>
@@ -44,6 +49,7 @@
             {% endif %}
 
         </tr>
+        <!-- 게시글이 삭제된 경우 -->
         {% else %}
         <tr>
             <td></td>
@@ -58,7 +64,7 @@
 
     </table>
 
-    <!-- pager 추가 -->
+    <!-- 페이징 처리 -->
     <div class="pager">
         <ul>
             {% if page_info.prev_page > 0 %}
@@ -68,6 +74,7 @@
             {% endif %}
 
             {% for page in page_info.page_range %}
+            <!-- 현재 페이지 표시 -->
             {% if page_info.page == page %}
             <li class="selected">
             {% else %}

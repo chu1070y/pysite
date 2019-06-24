@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'evk%_717j#x%zd0iss(1p36wg65c8%(ca-8!=oonc(14&97q3d'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -74,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -88,7 +85,6 @@ DATABASES = {
         'PORT': 5432
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -108,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -122,7 +117,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -130,5 +124,6 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'statics'),)
 STATIC_URL = '/assets/'
 
 # session
-SESSION_EXPIRE_AT_BROWERS_CLOSE = True
-SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 21600  # 6시간동안 동작 없으면 세션 타임아웃
+SESSION_SAVE_EVERY_REQUEST = True  # False이면 SESSION_COOKIE_AGE 설정한 시간 넘으면 무조건 세션 사라짐
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 브라우저 전체 닫으면
