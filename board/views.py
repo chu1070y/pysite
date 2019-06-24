@@ -82,16 +82,21 @@ def board_view(request, id=0):
 
     response = render(request, 'board/view.html', data)
 
+    row = Board.objects.get(id=id)
+
     if request.COOKIES.get('board_list') is not None:
         board_list = request.COOKIES.get("board_list")
 
         if str(id) not in board_list.split(":"):
             board_list += ":" + str(id)
-            response.set_cookie('board_list', board_list)
+            row.hit += 1
 
     else:
         board_list = str(id)
-        response.set_cookie('board_list', board_list)
+        row.hit += 1
+
+    row.save()
+    response.set_cookie('board_list', board_list, 3600 * 24)
 
     return response
 
