@@ -46,8 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/board/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+            <state relative-caret-position="578">
+              <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -332,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1561123992374</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="remove log">
+      <created>1561124102014</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1561124102014</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -363,7 +370,8 @@
     <MESSAGE value="add board" />
     <MESSAGE value="board paging, rewrite, CRUD" />
     <MESSAGE value="page parameter for all board action" />
-    <option name="LAST_COMMIT_MESSAGE" value="page parameter for all board action" />
+    <MESSAGE value="remove log" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove log" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/statics/css/main.css">
@@ -625,8 +633,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/board/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+        <state relative-caret-position="578">
+          <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>

@@ -80,7 +80,20 @@ def board_view(request, id=0):
 
     data = {"board": board, "page": page}
 
-    return render(request, 'board/view.html', data)
+    response = render(request, 'board/view.html', data)
+
+    if request.COOKIES.get('board_list') is not None:
+        board_list = request.COOKIES.get("board_list")
+
+        if str(id) not in board_list.split(":"):
+            board_list += ":" + str(id)
+            response.set_cookie('board_list', board_list)
+
+    else:
+        board_list = str(id)
+        response.set_cookie('board_list', board_list)
+
+    return response
 
 
 def board_delete(request, id=0):
