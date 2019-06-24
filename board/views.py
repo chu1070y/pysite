@@ -13,6 +13,11 @@ def board_list(request):
     page = 1
 
     try:
+        kwd = request.GET['kwd']
+    except Exception:
+        kwd = ''
+
+    try:
         page = int(request.GET['page'])
     except Exception:
         pass
@@ -20,7 +25,7 @@ def board_list(request):
     page_info.set_page(page)
     page_info.set_total_count(Board.objects.count())
 
-    board = Board.objects.order_by('-groupno', 'orderno')[page_info.start:page_info.start + page_info.display]
+    board = Board.objects.filter(title__icontains=kwd).order_by('-groupno', 'orderno')[page_info.start:page_info.start + page_info.display]
 
     data = {'boards': board, "page_info": page_info}
 
@@ -96,7 +101,9 @@ def board_view(request, id=0):
         row.hit += 1
 
     row.save()
-    response.set_cookie('board_list', board_list, 3600 * 24)
+
+    # 쿠키 만료 - 12시간
+    response.set_cookie('board_list', board_list, 3600 * 12)
 
     return response
 
